@@ -26,7 +26,7 @@
         var downloadButton = document.getElementById("downloadButton");
 
         uploadForm.addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the form from submitting normally
+            event.preventDefault();
 
             var fileInput = document.getElementById("fileInput");
             var file = fileInput.files[0];
@@ -36,7 +36,7 @@
                 formData.append("fileInput", file);
 
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "process.php"); // Replace "process.php" with the URL to your server-side script
+                xhr.open("POST", "upload"); // Replace "upload" with the URL or endpoint to your server-side C++ script
                 xhr.onload = function() {
                     if (xhr.status === 200) {
                         console.log("File uploaded successfully.");
@@ -51,7 +51,7 @@
 
         runProgramButton.addEventListener("click", function() {
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "run_program.php"); // Replace "run_program.php" with the URL to your server-side script that runs the .cpp program
+            xhr.open("GET", "run_program"); // Replace "run_program" with the URL or endpoint to your server-side C++ script that runs the program
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     console.log("Program executed successfully.");
@@ -65,7 +65,7 @@
 
         downloadButton.addEventListener("click", function() {
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "download.php"); // Replace "download.php" with the URL to your server-side script that handles the file download
+            xhr.open("GET", "download"); // Replace "download" with the URL or endpoint to your server-side script that handles the file download
             xhr.responseType = "blob";
             xhr.onload = function() {
                 if (xhr.status === 200) {

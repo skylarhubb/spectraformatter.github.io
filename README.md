@@ -1,3 +1,3 @@
-# skylarhubb.github.io
+# spectraformatter.github.io
 
 HELLO?????

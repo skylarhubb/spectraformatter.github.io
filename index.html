@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload</title>
+</head>
+<body>
+    <h1>File Upload</h1>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="fileInput">Select a .txt file:</label>
+        <input type="file" id="fileInput" name="fileInput" accept=".txt">
+
+        <br><br>
+
+        <input type="submit" value="Upload File">
+    </form>
+
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            // Get the selected file from the input field
+            var fileInput = document.getElementById("fileInput");
+            var file = fileInput.files[0];
+
+            if (file) {
+                // Create a new FormData object
+                var formData = new FormData();
+
+                // Append the selected file to the FormData object
+                formData.append("fileInput", file);
+
+                // Send the FormData to the server for processing
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "process.php"); // Replace "process.php" with the URL to your server-side script
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // File uploaded successfully
+                        // You can handle the server response here if needed
+                        console.log("File uploaded successfully.");
+                    } else {
+                        // Error uploading file
+                        console.error("Error uploading file.");
+                    }
+                };
+                xhr.send(formData);
+            }
+        });
+    </script>
+</body>
+</html>

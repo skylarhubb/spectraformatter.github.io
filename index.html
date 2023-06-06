@@ -15,36 +15,71 @@
         <input type="submit" value="Upload File">
     </form>
 
+    <br>
+
+    <button id="runProgramButton" disabled>Run Program</button>
+    <button id="downloadButton" disabled>Download Modified File</button>
+
     <script>
-        document.getElementById("uploadForm").addEventListener("submit", function(event) {
+        var uploadForm = document.getElementById("uploadForm");
+        var runProgramButton = document.getElementById("runProgramButton");
+        var downloadButton = document.getElementById("downloadButton");
+
+        uploadForm.addEventListener("submit", function(event) {
             event.preventDefault(); // Prevent the form from submitting normally
 
-            // Get the selected file from the input field
             var fileInput = document.getElementById("fileInput");
             var file = fileInput.files[0];
 
             if (file) {
-                // Create a new FormData object
                 var formData = new FormData();
-
-                // Append the selected file to the FormData object
                 formData.append("fileInput", file);
 
-                // Send the FormData to the server for processing
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "process.php"); // Replace "process.php" with the URL to your server-side script
                 xhr.onload = function() {
                     if (xhr.status === 200) {
-                        // File uploaded successfully
-                        // You can handle the server response here if needed
                         console.log("File uploaded successfully.");
+                        runProgramButton.disabled = false;
                     } else {
-                        // Error uploading file
                         console.error("Error uploading file.");
                     }
                 };
                 xhr.send(formData);
             }
+        });
+
+        runProgramButton.addEventListener("click", function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "run_program.php"); // Replace "run_program.php" with the URL to your server-side script that runs the .cpp program
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    console.log("Program executed successfully.");
+                    downloadButton.disabled = false;
+                } else {
+                    console.error("Error running program.");
+                }
+            };
+            xhr.send();
+        });
+
+        downloadButton.addEventListener("click", function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "download.php"); // Replace "download.php" with the URL to your server-side script that handles the file download
+            xhr.responseType = "blob";
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var blob = xhr.response;
+                    var downloadLink = document.createElement("a");
+                    downloadLink.href = window.URL.createObjectURL(blob);
+                    downloadLink.download = "modified_file.txt";
+                    downloadLink.click();
+                    console.log("File download initiated.");
+                } else {
+                    console.error("Error downloading file.");
+                }
+            };
+            xhr.send();
         });
     </script>
 </body>

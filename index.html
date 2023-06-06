@@ -81,6 +81,17 @@
             };
             xhr.send();
         });
+
+        // Enable buttons based on file selection
+        document.getElementById("fileInput").addEventListener("change", function() {
+            if (this.value !== "") {
+                runProgramButton.disabled = false;
+                downloadButton.disabled = true;
+            } else {
+                runProgramButton.disabled = true;
+                downloadButton.disabled = true;
+            }
+        });
     </script>
 </body>
 </html>
